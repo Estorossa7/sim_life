@@ -1,8 +1,8 @@
 
 #   atoms
 set_seed = 0                            # random seed
-height = 400
-width = 400                          
+height = 420
+width = 420                          
 
 fps = 10
 max_sec = 30                            #   no of sec sim runs for
