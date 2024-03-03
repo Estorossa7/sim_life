@@ -17,6 +17,8 @@ population = 400
 mutation_rate = 0.2
 target_color = (128, 0, 128)
 
+save_genes = 'F:\\sim_life\\saved_genes\\'
+
 #   molecules
 max_duration = fps * max_sec                #      max no of frames the sim can run for
 offset = height/2

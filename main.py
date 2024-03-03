@@ -1,5 +1,6 @@
 import pygame
 import math
+import time
 from sys import exit
 from random import randint, seed
 
@@ -16,20 +17,27 @@ class Main:
 
 
     def update(self):
-        for i in range(population):
-            key, value = fitness(self.dna_list[i])
-            self.fitness_list[key] = value
-        
-        parents = selection(self.fitness_list.keys())[:200]
-        for i in range(int(len(parents)/2)):
-            p1, p2 = parents[2*i], parents[2*i+1]
-            m, f = self.fitness_list[p1], self.fitness_list[p2] 
-            c1, c2 = mate(m,f)
-            self.child.append(c1)
-            self.child.append(c2)
-            
 
-            
+        for i in range(population):
+            value, key = fitness(self.dna_list[i])            #flipped
+            self.fitness_list[key] = value
+        parents = dict(sorted(self.fitness_list.items(), key=lambda item: item[1]))
+        sort_genes = list(parents.keys())[:200]
+
+        print(len(sort_genes))
+        
+        for i in range(int(len(sort_genes)/2)):
+            m, f = sort_genes[2*i], sort_genes[2*i+1]
+            c = mate(m,f)
+            for j in c:
+                self.child.append(j)
+
+        for i in range(population):
+            self.dna_list[i].reset_gene(self.child[i])
+        
+        print(len(self.child))
+        self.fitness_list = dict()
+        self.child = list()
 
     def draw(self):
         self.screen.fill((0,0,0))
@@ -39,8 +47,6 @@ class Main:
                 rect = pygame.Rect(j+20*j, i+20*i, 20, 20)
                 pygame.draw.rect(self.screen,self.dna_list[count].get_color(),rect)
                 count +=1
-
-
 
 
 
@@ -64,15 +70,19 @@ def game():
                 pygame.quit()
                 exit()
 
+        start = time.time()
         main_game.draw()
         main_game.update()
+        stop = time.time()
 
         count += 1
-        if count == 1:#max_duration:
+        if count == max_duration:
             run = False
         
         #file =  screen_file + str(count) + '.png'
         #pygame.image.save(screen, file)
+
+        print(f"frame: {count}, time: {stop - start}")              ##########
 
         pygame.display.update()
         clock.tick(fps)

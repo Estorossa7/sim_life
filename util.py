@@ -28,14 +28,24 @@ def cross_over(m,f):
     max = pow(2,8)-1
     s1 = pow(2,b)-1
     s2 = max - s1
+    s3 = pow(2,abs(b-8))-1
+    s4 = max - s3
+
     m1 = m & s2
     f1 = f & s2
     m2 = m & s1
     f2 = f & s1
     
-    g1 = m1 | m2
-    g2 = f1 | f2
-    return g1, g2
+    m3 = m & s4
+    f3 = f & s4
+    m4 = m & s3
+    f4 = f & s3
+    
+    g1 = m1 | f2
+    g2 = f1 | m2
+    g3 = m3 | f4
+    g4 = f3 | m4
+    return [g1, g2, g3, g4]
 
 #   mutation
 def mutat_int(a):
@@ -73,13 +83,18 @@ def selection(l):
 
 #   get parent pool
 def mate(m,f):
-    c1, c2 = [], []
+    c = []
     for i in range(len(m)):
-        g1, g2 = cross_over(m[i],f[i])
-        if(random()<mutation_rate):
-            g1 = mutat_int(g1)
-        if(random()<mutation_rate):
-            g2 = mutat_int(g2)
-        c1.append(g1)
-        c2.append(g2)  
-    return c1, c2
+        g = cross_over(m[i],f[i])
+        for i in g:
+            if(random()<mutation_rate):
+                i = mutat_int(i)
+        c.append(g)
+    c = np.array(c)
+    c = c.transpose()
+    return c
+
+
+#   write to file
+def write_file():
+    pass
