@@ -1,6 +1,8 @@
 simulating life like 
-    - random_points
+    - dna_1
+        attempt 1 on dna sim
 
-    placing point in a patten
+string of 8 bits - 1 bytes
 
-pygame
+bytes   for
+3       color 
