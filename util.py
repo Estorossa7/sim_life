@@ -3,6 +3,8 @@ from config import *
 from random import randint, random
 
 import numpy as np
+import pandas as pd
+import os
 
 #   initialises genes
 def init_gene_str(a = 8):
@@ -61,7 +63,7 @@ def mutat_int(a):
     return a
 
 #   fitness function
-def fitness(dna):
+def fitness(dna, target_color):
     g = dna.get_color()
     t = target_color
     sum = 0
@@ -95,6 +97,10 @@ def mate(m,f):
     return c
 
 
-#   write to file
-def write_file():
-    pass
+#   write to dataframe
+def write_file(l1, l2, iter, gen):
+    dic = {'color': l1, 'fitness': l2}
+    df = pd.DataFrame.from_dict(dic)
+    path = save_genes + str(iter) + '\\' + str(gen) + '.csv'
+    df.to_csv(path,index=False)
+

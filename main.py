@@ -16,15 +16,15 @@ class Main:
         self.child = []
 
 
-    def update(self):
+    def update(self,gen):
 
         for i in range(population):
-            value, key = fitness(self.dna_list[i])            #flipped
+            value, key = fitness(self.dna_list[i],target_color)            #flipped
             self.fitness_list[key] = value
         parents = dict(sorted(self.fitness_list.items(), key=lambda item: item[1]))
         sort_genes = list(parents.keys())[:200]
 
-        print(len(sort_genes))
+        write_file(list(parents.keys()), list(parents.values()), iter, gen)
         
         for i in range(int(len(sort_genes)/2)):
             m, f = sort_genes[2*i], sort_genes[2*i+1]
@@ -72,15 +72,15 @@ def game():
 
         start = time.time()
         main_game.draw()
-        main_game.update()
+        main_game.update(count)
         stop = time.time()
 
         count += 1
         if count == max_duration:
             run = False
         
-        #file =  screen_file + str(count) + '.png'
-        #pygame.image.save(screen, file)
+        file =  save_screen + str(iter) + '\\' + str(count) + '.png'
+        pygame.image.save(screen, file)
 
         print(f"frame: {count}, time: {stop - start}")              ##########
 
@@ -89,4 +89,13 @@ def game():
     
 
 if __name__=='__main__':
-    game()
+    for i in range(4):
+        iter = i
+        target_color = targets[i]
+        path_screen = save_screen + str(iter) + '\\'
+        path_gene = save_genes + str(iter) + '\\'
+        if not os.path.exists(path_gene):
+            os.mkdir(path_gene)
+        if not os.path.exists(path_screen):
+            os.mkdir(path_screen)
+        game()
